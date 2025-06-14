@@ -1,2 +1,2 @@
 Flask
-abacus_ai
+abacusai

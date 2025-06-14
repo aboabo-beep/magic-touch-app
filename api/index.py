@@ -1,11 +1,12 @@
 import os
 from flask import Flask, request, jsonify
-import abacus_ai
+import abacusai  # CORRECTED
 
 app = Flask(__name__)
 
+# We proberen de API-sleutel te laden, maar gaan door als het niet lukt (voor lokale tests)
 try:
-    abacus_ai.api_key = os.getenv("ABACUS_API_KEY")
+    abacusai.api_key = os.getenv("ABACUS_API_KEY")  # CORRECTED
 except Exception as e:
     print(f"Could not set Abacus API key: {e}")
 
@@ -29,13 +30,18 @@ def handle_magic_touch():
     if not dish_name:
         return jsonify({"error": "Geen gerecht opgegeven"}), 400
     
-    if not abacus_ai.api_key:
+    if not abacusai.api_key:  # CORRECTED
         return jsonify({"error": "Abacus API key is niet geconfigureerd op de server."}), 500
 
     final_prompt = f"{SYSTEM_PROMPT}\n\nDe gebruiker maakt het volgende: \"{dish_name}\""
 
     try:
-        ai_response_text = abacus_ai.LLM.generate(prompt=final_prompt)
+        ai_response_text = abacusai.LLM.generate(prompt=final_prompt)  # CORRECTED
         return jsonify({"raw_text": ai_response_text})
     except Exception as e:
         return jsonify({"error": f"AI API call mislukt: {str(e)}"}), 500
+
+# Deze route is voor een simpele test om te zien of de server draait
+@app.route('/api/test', methods=['GET'])
+def test_route():
+    return jsonify({"message": "Backend is bereikbaar!"})
