@@ -22,7 +22,7 @@ Jouw regels:
 - Vermijd volledige recepten. Je geeft een vonk.
 """
 
-@app.route('/api/get-magic-touch', methods=['POST'])
+@app.route('/get-magic-touch', methods=['POST'])
 def handle_magic_touch():
     data = request.get_json()
     dish_name = data.get('dish')
